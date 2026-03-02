@@ -1,0 +1,58 @@
+[
+  {
+    "input": "Translate to Hindi: How are you?",
+    "output": {
+      "overrideLang": "hi",
+      "overrideLangName": "Hindi",
+      "cleanTranscript": "How are you?"
+    }
+  },
+  {
+    "input": "Translate in Urdu please send the file",
+    "output": {
+      "overrideLang": "ur",
+      "overrideLangName": "Urdu",
+      "cleanTranscript": "please send the file"
+    }
+  },
+  {
+    "input": "In French, schedule the meeting tomorrow",
+    "output": {
+      "overrideLang": "fr",
+      "overrideLangName": "French",
+      "cleanTranscript": "schedule the meeting tomorrow"
+    }
+  },
+  {
+    "input": "Please send the report tomorrow, translate to Hindi.",
+    "output": {
+      "overrideLang": "hi",
+      "overrideLangName": "Hindi",
+      "cleanTranscript": "Please send the report tomorrow"
+    }
+  },
+  {
+    "input": "We will meet at 5 PM, in Spanish.",
+    "output": {
+      "overrideLang": "es",
+      "overrideLangName": "Spanish",
+      "cleanTranscript": "We will meet at 5 PM"
+    }
+  },
+  {
+    "input": "Just a normal sentence with no translation.",
+    "output": {
+      "overrideLang": null,
+      "overrideLangName": null,
+      "cleanTranscript": "Just a normal sentence with no translation."
+    }
+  },
+  {
+    "input": "in english translate to hindi this is a test",
+    "output": {
+      "overrideLang": "en",
+      "overrideLangName": "English",
+      "cleanTranscript": "translate to hindi this is a test"
+    }
+  }
+]

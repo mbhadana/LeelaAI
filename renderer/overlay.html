@@ -3,154 +3,234 @@
 
 <head>
     <style>
+        :root {
+            /* State Colors */
+            --color-idle: transparent;
+            --color-listening: #F9730C;
+            /* Orange from user palette */
+            --color-processing: #A5BBFC;
+            /* Light Blue from user palette */
+            --color-success: #1ce85b;
+            --color-error: #ff0000;
+            --color-warning: #FFD700;
+            /* Gold/Yellow for warnings */
+
+            --bar-color: var(--color-idle);
+        }
+
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
             display: flex;
-            align-items: center;
+            align-items: flex-end;
+            /* Flush with taskbar boundary */
             justify-content: center;
-            height: 100vh;
+            height: 20px;
             background: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        .status-rect {
-            width: 140px;
-            height: 33px;
-            background: rgba(30, 30, 30, 0.2);
-            /* Maximally transparent glass to see content beneath */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 22px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            gap: 12px;
-            transform: translateY(-20px);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-        }
-
-        .status-rect::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 22px;
-            padding: 0.5px;
-            background: linear-gradient(135deg, #007acc, #818cf8);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
+            user-select: none;
+            -webkit-user-select: none;
             pointer-events: none;
         }
 
-        .status-rect.show {
-            transform: translateY(0);
+        /* Top Bar */
+        #top-bar {
+            width: 100vw;
+            height: 1px;
+            /* Thin elegant line */
+            background-color: var(--bar-color);
+            background-size: 100vw 100%;
+            /* Changed to 100vw to facilitate seamless background-position wrap */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+            box-shadow: 0 0 10px var(--bar-color);
+            opacity: 0;
+            /* Hidden by default */
+        }
+
+        /* State Colors */
+        #top-bar[data-state="IDLE"] {
+            opacity: 0;
+            --bar-color: transparent;
+        }
+
+        #top-bar[data-state="LISTENING"] {
             opacity: 1;
+            --bar-color: var(--color-listening);
+            background-image: linear-gradient(90deg, #F9730C, #FFB053, #A5BBFC, #FAFAFA, #F9730C);
+            background-size: 200% 100%;
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #9ca3af;
-            flex-shrink: 0;
+        #top-bar[data-state="SUCCESS_PASTE"],
+        #top-bar[data-state="SUCCESS_POLISH"] {
+            opacity: 1;
+            --bar-color: #F9730C;
+            background-image: linear-gradient(90deg, #F9730C, #FFB053, #A5BBFC, #FAFAFA, #F9730C);
+            box-shadow: 0 0 15px #FFB053;
         }
 
-        .pulse {
-            animation: pulse-glow 1.5s infinite;
+        #top-bar[data-state="ERROR"] {
+            opacity: 1;
+            --bar-color: #ff0000;
+            background-image: none;
+            box-shadow: 0 0 20px #ff0000;
         }
 
-        @keyframes pulse-glow {
+        #top-bar[data-state="WARNING"] {
+            opacity: 1;
+            --bar-color: var(--color-warning);
+            background-image: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% 100%;
+            box-shadow: 0 0 15px var(--color-warning);
+        }
+
+        /* Processing State Animation */
+        @keyframes pulse-processing {
             0% {
-                opacity: 0.6;
-                box-shadow: 0 0 4px currentColor;
+                opacity: 0.7;
+                box-shadow: 0 0 5px var(--color-processing);
             }
 
             50% {
                 opacity: 1;
-                box-shadow: 0 0 12px currentColor;
+                box-shadow: 0 0 20px var(--color-processing);
             }
 
             100% {
-                opacity: 0.6;
-                box-shadow: 0 0 4px currentColor;
+                opacity: 0.7;
+                box-shadow: 0 0 5px var(--color-processing);
             }
         }
 
-        .status-text {
-            color: #ffffff;
-            font-size: 11.5px;
+        #top-bar[data-state="PROCESSING"] {
+            opacity: 1;
+            --bar-color: var(--color-processing);
+            background-image: linear-gradient(90deg, #F9730C, #FFB053, #A5BBFC, #FAFAFA, #F9730C);
+            background-size: 200% 100%;
+            animation: pulse-processing 0.5s ease-in-out infinite;
+        }
+
+        #status-label {
+            position: fixed;
+            bottom: 5px;
+            /* Floats just above the bottom line */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FAFAFA;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 10px;
             font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-grow: 1;
         }
 
-        .close-btn {
-            color: #858585;
-            font-size: 16px;
-            cursor: pointer;
-            transition: color 0.1s;
-            user-select: none;
-            line-height: 1;
-            padding: 0 5px;
-            margin-left: auto;
-        }
-
-        .close-btn:hover {
-            color: #ef4444;
+        #status-label.visible {
+            opacity: 0.8;
         }
     </style>
 </head>
 
 <body>
-    <div id="rect" class="status-rect">
-        <div id="dot" class="dot"></div>
-        <div id="text" class="status-text">Idle</div>
-        <div id="close-btn" class="close-btn" title="Close status">×</div>
-    </div>
+    <div id="top-bar" data-state="IDLE"></div>
+    <div id="status-label"></div>
 
     <script>
         const { ipcRenderer } = require('electron');
-        const rect = document.getElementById('rect');
-        const dot = document.getElementById('dot');
-        const textEl = document.getElementById('text');
-        const closeBtn = document.getElementById('close-btn');
+        const topBar = document.getElementById('top-bar');
+        const statusLabel = document.getElementById('status-label');
 
-        const STATES = {
-            LISTENING: { color: '#ef4444', text: 'Listening...', pulse: true },   // Red
-            PROCESSING: { color: '#3b82f6', text: 'Processing...', pulse: true },  // Blue
-            SUCCESS_PASTE: { color: '#10b981', text: 'Text pasted successfully', pulse: false }, // Green
-            SUCCESS_POLISH: { color: '#10b981', text: 'Text refined', pulse: false }, // Green
-            ERROR: { color: '#f59e0b', text: 'Error occurred', pulse: false }       // Amber
-        };
+        let currentMicLevel = 0;
+        let flowPos = 0;
+        let animationFrameId = null;
+        let resultTimeout = null;
 
-        ipcRenderer.on('update-status', (event, stateKey) => {
-            const state = STATES[stateKey];
-            if (!state) return;
+        ipcRenderer.on('mic-data', (event, level) => {
+            currentMicLevel = level;
+        });
 
-            dot.style.backgroundColor = state.color;
-            dot.style.color = state.color;
-            textEl.textContent = state.text;
+        function animateFlow() {
+            const state = topBar.dataset.state;
 
-            if (state.pulse) dot.classList.add('pulse');
-            else dot.classList.remove('pulse');
+            if (state === 'IDLE') {
+                animationFrameId = null;
+                return;
+            }
 
-            rect.classList.add('show');
+            if (state === 'LISTENING') {
+                let speed = 0.5 + (currentMicLevel * 10);
+                flowPos -= speed;
+                if (flowPos <= -200) flowPos += 200; // Correct wrap for 200% background-size
+
+                topBar.style.backgroundPosition = `${flowPos}% 0`;
+                let glow = 5 + (currentMicLevel * 20);
+                topBar.style.boxShadow = `0 0 ${glow}px var(--color-listening)`;
+            } else if (state === 'PROCESSING') {
+                let speed = 5; // Fast but smooth for background-position
+                flowPos -= speed;
+                if (flowPos <= -200) flowPos += 200;
+                topBar.style.backgroundPosition = `${flowPos}% 0`;
+                topBar.style.boxShadow = `0 0 25px #A5BBFC`;
+            } else if (state === 'WARNING') {
+                let speed = 2;
+                flowPos -= speed;
+                if (flowPos <= -200) flowPos += 200;
+                topBar.style.backgroundPosition = `${flowPos}% 0`;
+                topBar.style.boxShadow = `0 0 15px var(--color-warning)`;
+            }
+
+            animationFrameId = requestAnimationFrame(animateFlow);
+        }
+
+        // Start render loop
+        animationFrameId = requestAnimationFrame(animateFlow);
+
+        ipcRenderer.on('update-status', (event, stateKey, message) => {
+            console.log('[OVERLAY] New state:', stateKey, 'Message:', message);
+            topBar.dataset.state = stateKey;
+
+            // Handle status label
+            if (message) {
+                statusLabel.textContent = message;
+                statusLabel.classList.add('visible');
+            } else {
+                statusLabel.classList.remove('visible');
+            }
+
+            // Manage CSS animations explicitly to prevent conflicts
+            if (stateKey !== 'PROCESSING') {
+                topBar.style.animation = 'none';
+            } else {
+                topBar.style.animation = '';
+            }
+
+            // Start animation loop if needed
+            if (stateKey !== 'IDLE' && !animationFrameId) {
+                animateFlow();
+            }
+
+            // Cleanup previous result timeout
+            if (resultTimeout) {
+                clearTimeout(resultTimeout);
+                resultTimeout = null;
+            }
+
+            if (stateKey.startsWith('SUCCESS') || stateKey === 'ERROR' || stateKey === 'WARNING') {
+                resultTimeout = setTimeout(() => {
+                    if (topBar.dataset.state === stateKey) {
+                        topBar.dataset.state = 'IDLE';
+                        statusLabel.classList.remove('visible');
+                    }
+                    resultTimeout = null;
+                }, 3000); // Show results/warnings for 3s (increased for readability)
+            }
         });
 
         ipcRenderer.on('hide-status', () => {
-            rect.classList.remove('show');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            rect.classList.remove('show');
-            // Inform main process that we've dismissed it (optional)
+            topBar.dataset.state = 'IDLE';
         });
     </script>
 </body>

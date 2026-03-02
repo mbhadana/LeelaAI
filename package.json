@@ -1,12 +1,13 @@
 {
   "name": "leelav1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Leela V1 - AI Assistant",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build:protect": "node build_protected.js",
-    "dist": "npm run build:protect && electron-builder"
+    "build-portable": "npm run build:protect && cd dist_protected && npm install --omit=dev && cd .. && rd /s /q release-portable && npx electron-packager dist_protected LeelaV1 --platform=win32 --arch=x64 --out=release-portable --overwrite --icon=assets/icon.ico",
+    "dist": "npm run build-portable"
   },
   "build": {
     "appId": "com.leelav1.assistant",
@@ -41,7 +42,8 @@
     "bytenode": "^1.5.7",
     "ffmpeg-static": "^5.3.0",
     "form-data": "^4.0.5",
-    "sarvamai": "^1.0.0"
+    "sarvamai": "^1.0.0",
+    "uiohook-napi": "^1.5.4"
   },
   "author": "Antigravity",
   "license": "MIT"

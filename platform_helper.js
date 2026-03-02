@@ -27,6 +27,20 @@ class PlatformHelper {
     }
 
     /**
+     * Returns the command to simulate Ctrl+X (Win) or Cmd+X (Mac)
+     */
+    getCutScript() {
+        if (this.isWin) {
+            // Windows VBScript for Ctrl+X
+            return `Set WshShell = CreateObject("WScript.Shell")\nWshShell.SendKeys "^x"\n`;
+        } else if (this.isMac) {
+            // Mac AppleScript for Cmd+X
+            return `tell application "System Events" to keystroke "x" using {command down}`;
+        }
+        return '';
+    }
+
+    /**
      * Returns the command to simulate Ctrl+V (Win) or Cmd+V (Mac)
      */
     getPasteScript() {
@@ -36,6 +50,20 @@ class PlatformHelper {
         } else if (this.isMac) {
             // Mac AppleScript for Cmd+V
             return `tell application "System Events" to keystroke "v" using {command down}`;
+        }
+        return '';
+    }
+
+    /**
+     * Returns the command to simulate Ctrl+Z (Win) or Cmd+Z (Mac)
+     */
+    getUndoScript() {
+        if (this.isWin) {
+            // Windows VBScript for Ctrl+Z
+            return `Set WshShell = CreateObject("WScript.Shell")\nWshShell.SendKeys "^z"\n`;
+        } else if (this.isMac) {
+            // Mac AppleScript for Cmd+Z
+            return `tell application "System Events" to keystroke "z" using {command down}`;
         }
         return '';
     }

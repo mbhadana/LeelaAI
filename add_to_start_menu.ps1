@@ -1,26 +1,29 @@
 $WshShell = New-Object -ComObject WScript.Shell
 $StartMenuPath = [System.IO.Path]::Combine($env:APPDATA, "Microsoft\Windows\Start Menu\Programs")
-$ElectronPath = "C:\Users\admin\LeelaV1\node_modules\electron\dist\electron.exe"
+$DesktopPath = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
 $ProjectPath = "C:\Users\admin\LeelaV1"
+$LauncherPath = "$ProjectPath\launch_leela.vbs"
+$IconPath = "$ProjectPath\assets\icon.ico"
 
-# 1. Main App Shortcut
-$ShortcutPath = [System.IO.Path]::Combine($StartMenuPath, "Leela V1.lnk")
-$Shortcut = $WshShell.CreateShortcut($ShortcutPath)
-$Shortcut.TargetPath = $ElectronPath
-$Shortcut.Arguments = "`"$ProjectPath`""
-$Shortcut.WorkingDirectory = $ProjectPath
-$Shortcut.IconLocation = "C:\Windows\System32\shell32.dll, 24"
-$Shortcut.Save()
+# 1. Desktop Shortcut (Silent Launch)
+$DesktopShortcutPath = [System.IO.Path]::Combine($DesktopPath, "Leela V1.lnk")
+$DesktopShortcut = $WshShell.CreateShortcut($DesktopShortcutPath)
+$DesktopShortcut.TargetPath = "wscript.exe"
+$DesktopShortcut.Arguments = "`"$LauncherPath`""
+$DesktopShortcut.WorkingDirectory = $ProjectPath
+$DesktopShortcut.IconLocation = $IconPath
+$DesktopShortcut.Save()
 
-# 2. Dashboard Shortcut
-$DashShortcutPath = [System.IO.Path]::Combine($StartMenuPath, "Leela Dashboard.lnk")
-$DashShortcut = $WshShell.CreateShortcut($DashShortcutPath)
-$DashShortcut.TargetPath = $ElectronPath
-$DashShortcut.Arguments = "`"$ProjectPath`" --dashboard"
-$DashShortcut.WorkingDirectory = $ProjectPath
-$DashShortcut.IconLocation = "C:\Windows\System32\shell32.dll, 21"
-$DashShortcut.Save()
+# 2. Start Menu Shortcut (Silent Launch)
+$StartShortcutPath = [System.IO.Path]::Combine($StartMenuPath, "Leela V1.lnk")
+$StartShortcut = $WshShell.CreateShortcut($StartShortcutPath)
+$StartShortcut.TargetPath = "wscript.exe"
+$StartShortcut.Arguments = "`"$LauncherPath`""
+$StartShortcut.WorkingDirectory = $ProjectPath
+$StartShortcut.IconLocation = $IconPath
+$StartShortcut.Save()
 
-Write-Host "Shortcuts created in Start Menu:"
-Write-Host " - Leela V1 (Main App)"
-Write-Host " - Leela Dashboard (Settings & History)"
+Write-Host "Shortcuts created:"
+Write-Host " - Desktop: Leela V1 (Silent Launch)"
+Write-Host " - Start Menu: Leela V1 (Silent Launch)"
+Write-Host "Icon: $IconPath"

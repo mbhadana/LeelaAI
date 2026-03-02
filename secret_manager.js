@@ -6,6 +6,24 @@ class SecretManager {
     constructor() {
         this.configPath = path.join(app.getPath('userData'), 'config.json');
         this.keyDir = path.dirname(this.configPath);
+        this.migrateConfig();
+    }
+
+    migrateConfig() {
+        const rootConfig = path.join(__dirname, 'config.json');
+        if (fs.existsSync(rootConfig)) {
+            try {
+                if (!fs.existsSync(this.configPath)) {
+                    this.ensureDirectory();
+                    fs.copyFileSync(rootConfig, this.configPath);
+                    console.log('[SecretManager] Migrated config from project root');
+                }
+                fs.unlinkSync(rootConfig); // Always remove from root
+                console.log('[SecretManager] Removed legacy config from project root');
+            } catch (e) {
+                console.error('[SecretManager] Config migration/cleanup failed:', e);
+            }
+        }
     }
 
     ensureDirectory() {

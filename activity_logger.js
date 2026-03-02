@@ -1,9 +1,47 @@
+const { app } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
-const HISTORY_FILE = path.join(__dirname, 'activity_history.json');
+const USER_DATA_DIR = app.getPath('userData');
+const HISTORY_FILE = path.join(USER_DATA_DIR, 'activity_history.json');
 
-function logAction({ type, input, output, status }) {
+// Migration: Check for legacy paths
+function migrateHistory() {
+    const rootHistory = path.join(__dirname, 'activity_history.json');
+    const programDataHistory = path.join(process.env.ALLUSERSPROFILE || 'C:\\ProgramData', 'LeelaV1', 'activity_history.json');
+
+    // 1. Check Root migration
+    if (fs.existsSync(rootHistory)) {
+        try {
+            if (!fs.existsSync(HISTORY_FILE)) {
+                fs.copyFileSync(rootHistory, HISTORY_FILE);
+                console.log('[ActivityLogger] Migrated history from project root');
+            }
+            fs.unlinkSync(rootHistory); // Always remove from root
+            console.log('[ActivityLogger] Removed legacy history from project root');
+        } catch (e) {
+            console.error('[ActivityLogger] Root migration/cleanup failed:', e);
+        }
+    }
+
+    // 2. Check ProgramData migration
+    if (fs.existsSync(programDataHistory)) {
+        try {
+            if (!fs.existsSync(HISTORY_FILE)) {
+                fs.copyFileSync(programDataHistory, HISTORY_FILE);
+                console.log('[ActivityLogger] Migrated history from ProgramData');
+            }
+            fs.unlinkSync(programDataHistory);
+            console.log('[ActivityLogger] Removed legacy history from ProgramData');
+        } catch (e) {
+            console.error('[ActivityLogger] ProgramData migration/cleanup failed:', e);
+        }
+    }
+}
+
+migrateHistory();
+
+function logAction({ type, input, output, status, qualityScores }) {
     try {
         let history = [];
         if (fs.existsSync(HISTORY_FILE)) {
@@ -17,7 +55,8 @@ function logAction({ type, input, output, status }) {
             type,
             input: input || '',
             output: output || '',
-            status
+            status,
+            qualityScores: qualityScores || null
         };
 
         history.unshift(entry);

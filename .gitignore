@@ -1,22 +1,88 @@
-node_modules/
-recording-*.webm
-transcript-*.txt
-transcode-*.wav
-renderer.log
-hotkey.log
-sarvam_outputs/
-config.json
-.env
-*.vbs
+# Build artifacts
 dist_protected/
 release-portable/
 release/
 .builder-cache/
-# assets/ - Icons should be tracked
-convert_logo.js
-generate_ico.js
+dist_test/
+release-portable-builder/
+node_modules/
+
+# Local data & configs
+history.json
+activity_history.json
+activity_history.json.bak
+settings.json
+config.json
+user_memory.json
+first_run.flag
+.env
+.base_env
+
+# Logs
+*.log
+renderer.log
+hotkey.log
 logo_error.log
 generate_ico.log
+
+# Multimedia & Transcriptions
+*.webm
+*.wav
+*.txt
+recording-*.webm
+transcript-*.txt
+transcode-*.wav
+sarvam_outputs/
+
+# Scripts & Temporary files
+*.vbs
+convert_logo.js
+generate_ico.js
+build_protected.js
+electron_compiler.js
+inspect_electron.js
+check_sdk.js
+check_env.js
+# Build artifacts
+dist_protected/
+release-portable/
+release/
+.builder-cache/
+dist_test/
+release-portable-builder/
+node_modules/
+
+# Local data & configs
+history.json
+activity_history.json
+activity_history.json.bak
+settings.json
+config.json
+user_memory.json
+first_run.flag
+.env
+.base_env
+
+# Logs
+*.log
+renderer.log
+hotkey.log
+logo_error.log
+generate_ico.log
+
+# Multimedia & Transcriptions
+*.webm
+*.wav
+*.txt
+recording-*.webm
+transcript-*.txt
+transcode-*.wav
+sarvam_outputs/
+
+# Scripts & Temporary files
+*.vbs
+convert_logo.js
+generate_ico.js
 build_protected.js
 electron_compiler.js
 inspect_electron.js
@@ -24,20 +90,11 @@ check_sdk.js
 check_env.js
 test_*.js
 debug.js
-activity_history.json
-activity_history.json.bak
 logs/
-*.log
 .DS_Store
 Thumbs.db
-node_modules/
-recording-*.webm
-transcript-*.txt
-transcode-*.wav
-renderer.log
-hotkey.log
-sarvam_outputs/
-config.json
-.base_env
-.env
-*.vbs
+
+*.zip
+release-portable-builder/
+release/
+dist_protected/

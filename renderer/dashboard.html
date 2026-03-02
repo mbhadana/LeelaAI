@@ -43,8 +43,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 10px;
+            padding-top: 15px;
             border-right: 1px solid var(--border);
+        }
+
+        .logo-container {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .sidebar-icon {
@@ -204,6 +219,36 @@
             padding-right: 10px;
         }
 
+        /* Quality Badge */
+        .quality-badge {
+            display: inline-flex;
+            gap: 4px;
+            margin-left: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            vertical-align: middle;
+        }
+
+        .quality-badge.low {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .score-pill {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--bg-activity);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
         /* Settings Panels */
         .settings-container {
             max-width: 600px;
@@ -272,6 +317,127 @@
 
         .checkbox-container input:checked+.checkmark:after {
             display: block;
+        }
+
+        .lang-dropdown-container {
+            position: relative;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .lang-selected {
+            background: var(--bg-activity);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lang-selected:hover {
+            border-color: var(--accent);
+        }
+
+        .lang-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin-top: 5px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 150;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .lang-options.show {
+            display: block;
+        }
+
+        .lang-search {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--bg-sidebar);
+            z-index: 10;
+        }
+
+        .lang-search input {
+            width: 100%;
+            background: var(--bg-main);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-size: 11px;
+            color: white;
+            outline: none;
+        }
+
+        .lang-search input:focus {
+            border-color: var(--accent);
+        }
+
+        .lang-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .lang-item:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .lang-item.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .refresh-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-activity);
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 2px 6px;
+            font-size: 10px;
+            text-transform: uppercase;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+            background: var(--bg-activity);
         }
 
         /* Modal Details */
@@ -351,23 +517,249 @@
         .tab-pane.active {
             display: block;
         }
+
+        /* === ONBOARDING OVERLAY === */
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(15, 15, 20, 0.97);
+            z-index: 300;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            animation: obFadeIn 0.4s ease;
+        }
+
+        @keyframes obFadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .ob-step {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 480px;
+            animation: obSlideUp 0.4s ease;
+        }
+
+        .ob-step.active {
+            display: flex;
+        }
+
+        @keyframes obSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ob-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #F9730C, #FFB053, #A5BBFC);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ob-subtitle {
+            font-size: 15px;
+            color: #cccccc;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .ob-instruction {
+            font-size: 13px;
+            color: #858585;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .ob-kbd {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #F9730C;
+            animation: obKbdPulse 2s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes obKbdPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(249, 115, 12, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 20px 4px rgba(249, 115, 12, 0.15);
+            }
+        }
+
+        .ob-mic-pulse {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(249, 115, 12, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: obMicPulse 1.5s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes obMicPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(249, 115, 12, 0.3);
+            }
+
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 30px 8px rgba(249, 115, 12, 0.15);
+            }
+        }
+
+        .ob-success-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            animation: obBounce 0.6s ease;
+        }
+
+        @keyframes obBounce {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .ob-hint-box {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 16px 24px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .ob-hint-box p {
+            margin: 6px 0;
+            color: #aaa;
+            font-size: 13px;
+        }
+
+        .ob-workflow {
+            background: rgba(249, 115, 12, 0.06);
+            border: 1px solid rgba(249, 115, 12, 0.15);
+            border-radius: 8px;
+            padding: 20px 30px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 2;
+            color: #ccc;
+        }
+
+        .ob-btn {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #F9730C, #FFB053);
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .ob-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(249, 115, 12, 0.3);
+        }
+
+        .ob-btn-secondary {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+
+        .ob-trust {
+            font-size: 12px;
+            color: #666;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        .ob-progress {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 30px;
+        }
+
+        .ob-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+        }
+
+        .ob-dot.active {
+            background: #F9730C;
+        }
+
+        .ob-dot.done {
+            background: rgba(249, 115, 12, 0.4);
+        }
     </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <div class="sidebar-icon active" onclick="showTab('activity')" title="Activity History">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
-            </svg>
+        <div class="logo-container" title="Leela V1">
+            <img src="../assets/icon.png" alt="Leela Logo">
         </div>
-        <div class="sidebar-icon" onclick="showTab('settings')" title="Settings">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
-            </svg>
-        </div>
+        <!-- Navigation icons removed per user request - using text tabs instead -->
 
         <div class="sidebar-footer">
             <div id="mic-indicator" class="mic-indicator" title="Microphone: Checking..."></div>
@@ -385,14 +777,68 @@
     <div class="main-container">
         <div class="tabs-bar">
             <div id="tab-activity" class="tab active" onclick="showTab('activity')">Activity history</div>
+            <div id="tab-terminal" class="tab" onclick="showTab('terminal')">Terminal</div>
             <div id="tab-settings" class="tab" onclick="showTab('settings')">Settings</div>
         </div>
-
         <div class="content">
             <div id="pane-activity" class="tab-pane active">
-                <h2>Recent activities</h2>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(255,255,255,0.03); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border);">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <h2 style="margin: 0;">Recent activities</h2>
+                        <div style="width: 1px; height: 16px; background: var(--border);"></div>
+                        <div class="lang-dropdown-container" style="max-width: 160px;">
+                            <div id="home-lang-selected" class="lang-selected" onclick="toggleHomeLangDropdown()"
+                                style="padding: 6px 10px; font-size: 11px; background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2);">
+                                <span style="color: var(--text-secondary); margin-right: 5px;">To:</span>
+                                <span id="home-current-lang-name"
+                                    style="font-weight: 600; color: var(--accent);">English</span>
+                                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                    style="margin-left: 5px;">
+                                    <path d="M6 9l6 6 6-6" />
+                                </svg>
+                            </div>
+                            <div id="home-lang-options" class="lang-options" style="width: 200px;">
+                                <div class="lang-search">
+                                    <input type="text" id="home-lang-search-input" placeholder="Search language..."
+                                        oninput="filterLanguages(this.value, 'home')" onclick="event.stopPropagation()">
+                                </div>
+                                <div id="home-lang-list">
+                                    <!-- Languages will be injected here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="loadHistory()" class="refresh-btn" title="Refresh History">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                        </svg>
+                    </button>
+                </div>
                 <div id="activity-list" class="activity-list">
                     <!-- Rows will be injected here -->
+                </div>
+            </div>
+
+            <div id="pane-terminal" class="tab-pane">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2 style="margin: 0;">Application Logs</h2>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="copyLogs()" class="copy-btn">Copy All</button>
+                        <button onclick="clearLogs()" class="copy-btn" style="color: #ef4444;">Clear</button>
+                        <button onclick="loadLogs()" class="refresh-btn" title="Refresh Logs">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="log-container" class="panel-content"
+                    style="height: calc(100vh - 120px); max-height: none; font-size: 11px; color: #aaa;">
+                    <!-- Logs will be injected here -->
                 </div>
             </div>
 
@@ -402,7 +848,8 @@
                     <div class="setting-item">
                         <div class="setting-label">
                             <span class="setting-title">Status Overlay</span>
-                            <span class="setting-desc">Display the floating status bar at the top center of the screen
+                            <span class="setting-desc">Display the floating status bar at the top center of the
+                                screen
                                 during processing.</span>
                         </div>
                         <label class="checkbox-container">
@@ -428,13 +875,39 @@
                     <div class="setting-item">
                         <div class="setting-label">
                             <span class="setting-title">Run on Startup</span>
-                            <span class="setting-desc">Launch Leela V1 automatically when you log into Windows.</span>
+                            <span class="setting-desc">Launch Leela V1 automatically when you log into
+                                Windows.</span>
                         </div>
                         <label class="checkbox-container">
                             <input type="checkbox" id="startWithWindows"
                                 onchange="updateSetting('startWithWindows', this.checked)">
                             <div class="checkmark"></div>
                         </label>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <span class="setting-title">Target Language</span>
+                            <span class="setting-desc">Choose the language to translate your dictations into.</span>
+                        </div>
+                        <div class="lang-dropdown-container">
+                            <div id="lang-selected" class="lang-selected" onclick="toggleLangDropdown()">
+                                <span id="current-lang-name">English</span>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 9l6 6 6-6" />
+                                </svg>
+                            </div>
+                            <div id="lang-options" class="lang-options">
+                                <div class="lang-search">
+                                    <input type="text" id="lang-search-input" placeholder="Search language..."
+                                        oninput="filterLanguages(this.value)" onclick="event.stopPropagation()">
+                                </div>
+                                <div id="lang-list">
+                                    <!-- Languages will be injected here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div style="border-top: 1px solid var(--border); margin: 10px 0; padding-top: 15px;">
@@ -468,7 +941,7 @@
         style="position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-sidebar); z-index: 200; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 40px;">
         <div style="max-width: 440px; text-align: center;">
             <div
-                style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent), #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                style="font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(135deg, var(--accent), #818cf8); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
                 LEELA</div>
             <h1 style="font-size: 24px; margin-bottom: 15px; color: var(--text-primary);">Connect Sarvam AI</h1>
             <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 30px;">
@@ -500,14 +973,105 @@
         </div>
     </div>
 
+    <!-- ONBOARDING OVERLAY -->
+    <div id="onboarding-overlay" class="onboarding-overlay">
+        <div class="ob-progress" id="ob-progress"></div>
+
+        <!-- STEP 1: Welcome -->
+        <div class="ob-step" id="ob-step-1">
+            <div class="ob-title">Welcome to Leela</div>
+            <div class="ob-subtitle">Leela works everywhere on your system using just one shortcut.</div>
+            <div class="ob-instruction">Press the shortcut to begin</div>
+            <div class="ob-kbd">Ctrl + Space</div>
+            <div class="ob-subtitle" style="font-size: 12px; color: #666;">Press it now to try</div>
+        </div>
+
+        <!-- STEP 2: Listening -->
+        <div class="ob-step" id="ob-step-2">
+            <div class="ob-mic-pulse">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="#F9730C">
+                    <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
+                    <path
+                        d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
+                </svg>
+            </div>
+            <div class="ob-title" style="font-size: 22px;">🎙 Listening…</div>
+            <div class="ob-subtitle">Say anything. Leela is recording your voice.</div>
+            <div class="ob-subtitle" style="font-size: 12px; color: #666;">Release Ctrl+Space when done</div>
+        </div>
+
+        <!-- STEP 3: Result -->
+        <div class="ob-step" id="ob-step-3">
+            <div class="ob-success-icon">✨</div>
+            <div class="ob-title" style="font-size: 22px;">Speech → Text</div>
+            <div class="ob-subtitle">Your speech has been converted into structured text.</div>
+            <button class="ob-btn" onclick="obNextStep()">See It on Dashboard →</button>
+        </div>
+
+        <!-- STEP 4: Dashboard -->
+        <div class="ob-step" id="ob-step-4">
+            <div class="ob-title" style="font-size: 22px;">📋 Your Activity Panel</div>
+            <div class="ob-subtitle">Your input appears here.<br>This is your learning space.</div>
+            <div class="ob-subtitle" style="font-size: 12px; color: #666;">Speech → Result → Dashboard</div>
+            <button class="ob-btn" onclick="obNextStep()">Next →</button>
+        </div>
+
+        <!-- STEP 5: Selection -->
+        <div class="ob-step" id="ob-step-5">
+            <div class="ob-title" style="font-size: 22px;">✏️ Select Text</div>
+            <div class="ob-subtitle">Open any app and select the text you want to improve.</div>
+            <div class="ob-instruction">Highlight any text, then continue</div>
+            <button class="ob-btn" onclick="obNextStep()">I've Selected Text →</button>
+        </div>
+
+        <!-- STEP 6: Command -->
+        <div class="ob-step" id="ob-step-6">
+            <div class="ob-title" style="font-size: 22px;">🎯 Context Command</div>
+            <div class="ob-subtitle">Now press <strong>Ctrl + Space</strong> again.<br>Leela understands context and can
+                improve selected text instantly.</div>
+            <div class="ob-hint-box">
+                <p>Try saying:</p>
+                <p style="color: #F9730C;">• "Polish this"</p>
+                <p style="color: #F9730C;">• "Make it professional"</p>
+                <p style="color: #F9730C;">• "Translate to Hindi"</p>
+            </div>
+            <button class="ob-btn" onclick="obNextStep()">Got It →</button>
+        </div>
+
+        <!-- STEP 7: Confirmation -->
+        <div class="ob-step" id="ob-step-7">
+            <div class="ob-success-icon">✅</div>
+            <div class="ob-title" style="font-size: 22px;">Perfect.</div>
+            <div class="ob-subtitle">You just learned Leela's core workflow.</div>
+            <button class="ob-btn" onclick="obNextStep()">See Summary →</button>
+        </div>
+
+        <!-- STEP 8: Finish -->
+        <div class="ob-step" id="ob-step-8">
+            <div class="ob-title">Leela Workflow</div>
+            <div class="ob-workflow">
+                <strong>Dictate:</strong> Press Ctrl+Space → Speak<br>
+                <strong>Improve:</strong> Select Text → Ctrl+Space → Command
+            </div>
+            <button class="ob-btn" onclick="completeOnboarding()">Start Using Leela</button>
+            <div class="ob-trust">Leela learns as you use it.</div>
+        </div>
+    </div>
+
     <div id="details-panel">
         <span class="panel-close" onclick="closePanel()">×</span>
         <div class="panel-section">
-            <div class="panel-label">Input / Context</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="panel-label" style="margin: 0;">Input / Context</div>
+                <button class="copy-btn" onclick="copyFromPanel('panel-input')">Copy</button>
+            </div>
             <div id="panel-input" class="panel-content"></div>
         </div>
         <div class="panel-section">
-            <div class="panel-label">Generated Output</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div class="panel-label" style="margin: 0;">Generated Output</div>
+                <button class="copy-btn" onclick="copyFromPanel('panel-output')">Copy</button>
+            </div>
             <div id="panel-output" class="panel-content"></div>
         </div>
         <div class="panel-section">
@@ -518,6 +1082,90 @@
 
     <script>
         const { ipcRenderer } = require('electron');
+
+        const languages = [
+            { code: 'en', name: 'English' },
+            { code: 'hi', name: 'Hindi' },
+            { code: 'bn', name: 'Bengali' },
+            { code: 'ta', name: 'Tamil' },
+            { code: 'te', name: 'Telugu' },
+            { code: 'gu', name: 'Gujarati' },
+            { code: 'kn', name: 'Kannada' },
+            { code: 'ml', name: 'Malayalam' },
+            { code: 'mr', name: 'Marathi' },
+            { code: 'pa', name: 'Punjabi' },
+            { code: 'or', name: 'Odia' },
+            { code: 'fr', name: 'French' },
+            { code: 'es', name: 'Spanish' },
+            { code: 'de', name: 'German' },
+            { code: 'it', name: 'Italian' },
+            { code: 'ja', name: 'Japanese' },
+            { code: 'ko', name: 'Korean' },
+            { code: 'zh', name: 'Chinese' }
+        ];
+
+        function toggleLangDropdown() {
+            document.getElementById('lang-options').classList.toggle('show');
+            if (document.getElementById('lang-options').classList.contains('show')) {
+                document.getElementById('lang-search-input').focus();
+            }
+        }
+
+        function toggleHomeLangDropdown() {
+            document.getElementById('home-lang-options').classList.toggle('show');
+            if (document.getElementById('home-lang-options').classList.contains('show')) {
+                document.getElementById('home-lang-search-input').focus();
+            }
+        }
+
+        function filterLanguages(query, context = 'settings') {
+            const q = query.toLowerCase();
+            const filtered = languages.filter(l => l.name.toLowerCase().includes(q));
+            renderLanguageList(filtered, context);
+        }
+
+        function renderLanguageList(listToRender, context = 'settings') {
+            const listId = context === 'home' ? 'home-lang-list' : 'lang-list';
+            const list = document.getElementById(listId);
+            if (!list) return;
+
+            list.innerHTML = '';
+            listToRender.forEach(lang => {
+                const item = document.createElement('div');
+                item.className = 'lang-item';
+                item.textContent = lang.name;
+                item.onclick = (e) => {
+                    e.stopPropagation();
+                    selectLanguage(lang, context);
+                };
+                list.appendChild(item);
+            });
+        }
+
+        async function selectLanguage(lang, context) {
+            // Update both UI labels
+            const homeLabel = document.getElementById('home-current-lang-name');
+            const settingsLabel = document.getElementById('current-lang-name');
+            if (homeLabel) homeLabel.textContent = lang.name;
+            if (settingsLabel) settingsLabel.textContent = lang.name;
+
+            // Close whichever dropdown was open
+            document.getElementById('lang-options').classList.remove('show');
+            const homeOptions = document.getElementById('home-lang-options');
+            if (homeOptions) homeOptions.classList.remove('show');
+
+            await updateSetting('targetLanguage', lang.code);
+            await updateSetting('targetLanguageName', lang.name);
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-dropdown-container')) {
+                document.getElementById('lang-options').classList.remove('show');
+                const homeOptions = document.getElementById('home-lang-options');
+                if (homeOptions) homeOptions.classList.remove('show');
+            }
+        });
 
         async function loadHistory() {
             const history = await ipcRenderer.invoke('get-history');
@@ -537,10 +1185,17 @@
                 const time = new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 const typeLabel = item.type.split(' ').pop(); // Just 'Dictation' or 'Polish'
 
+                let qualityHtml = '';
+                if (item.qualityScores) {
+                    const avg = Math.round((item.qualityScores.meaning + item.qualityScores.grammar + item.qualityScores.tone) / 3);
+                    const isLow = avg < 8;
+                    qualityHtml = `<span class="quality-badge ${isLow ? 'low' : ''}" title="Polish Quality: ${avg}/10">PQ ${avg}/10</span>`;
+                }
+
                 row.innerHTML = `
                     <div class="row-type">${typeLabel.toUpperCase()}</div>
                     <div class="row-time">${time}</div>
-                    <div class="row-preview">${item.output || item.input}</div>
+                    <div class="row-preview">${item.output || item.input} ${qualityHtml}</div>
                 `;
                 list.appendChild(row);
             });
@@ -551,6 +1206,15 @@
             document.getElementById('overlayEnabled').checked = settings.overlayEnabled;
             document.getElementById('historyEnabled').checked = settings.historyEnabled;
             document.getElementById('startWithWindows').checked = settings.startWithWindows;
+
+            if (settings.targetLanguageName) {
+                const homeLabel = document.getElementById('home-current-lang-name');
+                const settingsLabel = document.getElementById('current-lang-name');
+                if (homeLabel) homeLabel.textContent = settings.targetLanguageName;
+                if (settingsLabel) settingsLabel.textContent = settings.targetLanguageName;
+            }
+            renderLanguageList(languages, 'settings');
+            renderLanguageList(languages, 'home');
             updateApiKeyStatus();
         }
 
@@ -610,30 +1274,62 @@
         }
 
         function showTab(id) {
-            // Update sidebar icons
-            document.querySelectorAll('.sidebar-icon').forEach(el => el.classList.remove('active'));
             // Update horizontal tabs
             document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
             // Update panes
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
 
             if (id === 'activity') {
-                document.querySelector('.sidebar-icon[title="Activity History"]').classList.add('active');
                 document.getElementById('tab-activity').classList.add('active');
                 document.getElementById('pane-activity').classList.add('active');
                 loadHistory();
+            } else if (id === 'terminal') {
+                document.getElementById('tab-terminal').classList.add('active');
+                document.getElementById('pane-terminal').classList.add('active');
+                loadLogs();
             } else {
-                document.querySelector('.sidebar-icon[title="Settings"]').classList.add('active');
                 document.getElementById('tab-settings').classList.add('active');
                 document.getElementById('pane-settings').classList.add('active');
+                loadSettings();
             }
             closePanel();
+        }
+
+        async function loadLogs() {
+            const logs = await ipcRenderer.invoke('get-logs');
+            const container = document.getElementById('log-container');
+            container.textContent = logs.join('\n');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function copyLogs() {
+            const logs = document.getElementById('log-container').textContent;
+            if (logs) {
+                const { clipboard } = require('electron');
+                clipboard.writeText(logs);
+                alert('All logs copied to clipboard.');
+            }
+        }
+
+        async function clearLogs() {
+            if (confirm('Clear all logs?')) {
+                ipcRenderer.send('clear-logs');
+                loadLogs();
+            }
         }
 
         function openPanel(item) {
             document.getElementById('panel-input').textContent = item.input || '(None)';
             document.getElementById('panel-output').textContent = item.output || '(No result)';
-            document.getElementById('panel-status').textContent = `ID: ${item.id} | Status: ${item.status}`;
+
+            let metaText = `ID: ${item.id} | Status: ${item.status}`;
+            if (item.qualityScores) {
+                metaText += `\n\nPOLISH QUALITY METRICS:`;
+                metaText += `\n- Meaning Preservation: ${item.qualityScores.meaning}/10`;
+                metaText += `\n- Grammar & Clarity: ${item.qualityScores.grammar}/10`;
+                metaText += `\n- Natural Tone: ${item.qualityScores.tone}/10`;
+            }
+            document.getElementById('panel-status').innerText = metaText;
             document.getElementById('details-panel').style.display = 'flex';
         }
 
@@ -641,8 +1337,88 @@
             document.getElementById('details-panel').style.display = 'none';
         }
 
+        function copyFromPanel(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            if (text) {
+                const { clipboard } = require('electron');
+                clipboard.writeText(text);
+
+                // Visual feedback
+                const btn = event.currentTarget;
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED';
+                setTimeout(() => { btn.innerText = originalText; }, 1500);
+            }
+        }
+
+        // === ONBOARDING LOGIC ===
+        let obCurrentStep = 0;
+        const OB_TOTAL_STEPS = 8;
+        let obActive = false;
+
+        function buildObProgress() {
+            const container = document.getElementById('ob-progress');
+            container.innerHTML = '';
+            for (let i = 1; i <= OB_TOTAL_STEPS; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'ob-dot';
+                dot.id = 'ob-dot-' + i;
+                container.appendChild(dot);
+            }
+        }
+
+        function obShowStep(step) {
+            for (let i = 1; i <= OB_TOTAL_STEPS; i++) {
+                const el = document.getElementById('ob-step-' + i);
+                if (el) el.classList.remove('active');
+                const dot = document.getElementById('ob-dot-' + i);
+                if (dot) {
+                    dot.classList.remove('active');
+                    if (i < step) dot.classList.add('done');
+                    else dot.classList.remove('done');
+                }
+            }
+            const target = document.getElementById('ob-step-' + step);
+            if (target) {
+                target.classList.add('active');
+                target.style.animation = 'none';
+                target.offsetHeight;
+                target.style.animation = '';
+            }
+            const activeDot = document.getElementById('ob-dot-' + step);
+            if (activeDot) activeDot.classList.add('active');
+            obCurrentStep = step;
+        }
+
+        function obNextStep() {
+            if (obCurrentStep < OB_TOTAL_STEPS) {
+                obShowStep(obCurrentStep + 1);
+            }
+        }
+
+        function startOnboarding() {
+            obActive = true;
+            buildObProgress();
+            document.getElementById('onboarding-overlay').style.display = 'flex';
+            obShowStep(1);
+        }
+
+        function completeOnboarding() {
+            obActive = false;
+            document.getElementById('onboarding-overlay').style.display = 'none';
+            ipcRenderer.send('complete-onboarding');
+        }
+
+        ipcRenderer.on('start-onboarding', () => {
+            console.log('[ONBOARDING] Received start-onboarding signal.');
+            startOnboarding();
+        });
+
         ipcRenderer.on('history-updated', () => {
             console.log('Dashboard: History received update notification');
+            if (obActive && (obCurrentStep === 2 || obCurrentStep === 3)) {
+                obShowStep(3);
+            }
             if (document.getElementById('pane-activity').classList.contains('active')) {
                 loadHistory();
             }
@@ -767,6 +1543,50 @@
             }
         }
 
+        let audioContext = null;
+        let analyser = null;
+        let animationFrameId = null;
+
+        function startMicAnalysis(stream) {
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+                analyser.fftSize = 64; // Smaller for performance
+
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+                let lastSend = 0;
+
+                function update() {
+                    const now = Date.now();
+                    if (now - lastSend > 50) { // Limit to 20 updates/sec
+                        analyser.getByteFrequencyData(dataArray);
+                        let sum = 0;
+                        for (let i = 0; i < bufferLength; i++) {
+                            sum += dataArray[i];
+                        }
+                        const average = sum / bufferLength;
+                        const normalized = Math.min(1, (average * 1.5) / 128);
+                        ipcRenderer.send('mic-data', normalized);
+                        lastSend = now;
+                    }
+                    animationFrameId = requestAnimationFrame(update);
+                }
+                update();
+            } catch (e) { console.error('Mic analysis failed', e); }
+        }
+
+        function stopMicAnalysis() {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            if (audioContext && audioContext.state !== 'closed') audioContext.close();
+            audioContext = null;
+            analyser = null;
+            // Send a final zero to clear waveform
+            ipcRenderer.send('mic-data', 0);
+        }
+
         async function startRecording() {
             if (isRecording || isProcessingVoice) {
                 console.warn('[RECORDER] startRecording blocked: already recording or processing.');
@@ -783,6 +1603,10 @@
                 mediaRecorder.onstop = onRecordingStop;
                 mediaRecorder.start();
                 isRecording = true;
+
+                // NEW: Start visual analysis
+                startMicAnalysis(currentStream);
+
                 setMicStatus('Recording', 'recording');
                 ipcRenderer.send('update-app-state', 'LISTENING');
                 console.log('[RECORDER] Recording started successfully.');
@@ -800,6 +1624,10 @@
             }
             console.log('[RECORDER] Stopping recording...');
             isProcessingVoice = true; // Engage lock until API transcription resolves
+
+            // NEW: Stop visual analysis
+            stopMicAnalysis();
+
             ipcRenderer.send('update-app-state', 'PROCESSING');
             mediaRecorder.stop();
             try {
@@ -813,13 +1641,23 @@
         }
 
         async function onRecordingStop() {
+            if (isProcessingVoice && !isRecording) {
+                // Guard against duplicate triggered by stopRecording + mediaRecorder.onstop
+            }
             console.log('[RECORDER] MediaRecorder stopped, assembling blob.');
+            isProcessingVoice = true; // Ensure locked
+
             try {
                 const blob = new Blob(chunks, { type: 'audio/webm' });
                 const arrayBuffer = await blob.arrayBuffer();
                 const buffer = Buffer.from(arrayBuffer);
-                const localPath = path.join(__dirname, '..', `recording-${Date.now()}.webm`);
-                fs.writeFileSync(localPath, buffer);
+
+                // Get safe temporary path from the main process
+                const tempDir = await ipcRenderer.invoke('get-temp-path');
+                const localPath = path.join(tempDir, `recording-${Date.now()}.webm`);
+
+                // ASYNC WRITE: Prevent UI freeze
+                await fs.promises.writeFile(localPath, buffer);
 
                 console.log(`[API] Triggering 'process-recording' IPC with ${localPath}`);
                 const result = await ipcRenderer.invoke('process-recording', localPath);
@@ -829,12 +1667,14 @@
                     loadHistory();
                 } else {
                     console.error('[API] process-recording failed:', result ? result.error : 'unknown');
+                    ipcRenderer.send('update-app-state', 'ERROR');
                 }
             } catch (e) {
                 console.error('[API] Error in onRecordingStop:', e);
+                ipcRenderer.send('update-app-state', 'ERROR');
             } finally {
                 chunks = [];
-                isProcessingVoice = false; // Release lock
+                isProcessingVoice = false; // Release lock GUARANTEED
                 console.log('[RECORDER] Processing lock released.');
             }
         }
@@ -842,6 +1682,9 @@
         ipcRenderer.on('hotkey-toggle', () => {
             console.log('[HOTKEY] hotkey-toggle event received.');
             playPop();
+            if (obActive && obCurrentStep === 1) {
+                obShowStep(2);
+            }
             if (!isRecording) startRecording();
             else stopRecording();
         });
